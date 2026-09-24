@@ -1,0 +1,60 @@
+{
+  "outer_seasons": [
+    2023,
+    2024,
+    2025
+  ],
+  "validation": "previous season; training strictly earlier",
+  "grid": [
+    {
+      "max_depth": 1,
+      "n_estimators": 80
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 180
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 80
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 180
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 80
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 180
+    }
+  ],
+  "features": [
+    "lh",
+    "la",
+    "home_exposure",
+    "away_exposure",
+    "home_lag_npxg",
+    "home_lag_npxga",
+    "home_deep",
+    "home_deep_allowed",
+    "home_press",
+    "home_rest",
+    "home_missing",
+    "away_lag_npxg",
+    "away_lag_npxga",
+    "away_deep",
+    "away_deep_allowed",
+    "away_press",
+    "away_rest",
+    "away_missing"
+  ],
+  "selection": "lowest validation RPS; fixed grid order tie break",
+  "automatic_promotion": false,
+  "prior_research_seasons": true,
+  "baseline": "archived daily v02 npxG ratings + DC",
+  "xgboost_version": "3.4.1",
+  "source_sha256": "cf35e98096e36b325be7e0eb5983fcc6846df91364366a7cfdd669f976e13b98"
+}

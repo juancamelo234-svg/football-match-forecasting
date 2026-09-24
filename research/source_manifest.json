@@ -1,0 +1,16 @@
+{
+  "archive": "football_xg_dos_ligas_filtro_activo.zip",
+  "library_version": "37",
+  "archive_sha256": "088c687d3682070fd2c78f0cffc7dbdfba19c59c752cb50c227dbc3ca441a7ce",
+  "original_module_sha256": {
+    "xg_ratings.py": "ab30ede003885830241037d7cf2b1853a5469d6cf0d219e6db4a16e9a6230609",
+    "xg_pipeline.py": "c90b39641f22961f88f5cc2f2a85336176cccf65174fbc8647bc46129970cb07",
+    "league_guard.py": "dd7b79e7ef684ea65baf0227dfde32f983c0e90ab89d1de6ace9a0fef5e97e2f"
+  },
+  "adaptation": "Core modules moved into a package; imports updated. Synthetic generator moved out of tests. See docs/reproducibility.md for release scope.",
+  "archived_predictions": {
+    "source_path": "football_xg/leagues/ENG_PL/studies/xgboost_candidate/predictions.csv",
+    "sha256": "ed07ecf5d20f331cbaef282e386b4efdea0ba76aa7fd1a4d12c3086d966954ae",
+    "purpose": "Saved forecasts and observed outcome labels for metric reproduction; no raw features or shot data."
+  }
+}

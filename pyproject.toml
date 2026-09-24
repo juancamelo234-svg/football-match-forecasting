@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "football-match-forecasting"
+version = "0.1.0"
+description = "Opponent-adjusted npxG ratings, score probabilities, and chronological evaluation"
+requires-python = ">=3.11"
+dependencies = ["numpy==2.3.5", "pandas==2.2.3", "scipy==1.17.0"]
+
+[project.scripts]
+football-forecast = "football_forecasting.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

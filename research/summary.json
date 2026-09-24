@@ -1,0 +1,95 @@
+{
+  "seasons": [
+    {
+      "season": 2023,
+      "parameters": {
+        "max_depth": 3,
+        "n_estimators": 80
+      },
+      "baseline": {
+        "n": 380,
+        "rps": 0.19095948389802356,
+        "log_loss": 0.9334793690216466,
+        "accuracy": 0.5921052631578947,
+        "mean_draw_probability": 0.22862073350961248,
+        "observed_draw_rate": 0.21578947368421053
+      },
+      "xgboost": {
+        "n": 380,
+        "rps": 0.19038278516621646,
+        "log_loss": 0.9321490465848782,
+        "accuracy": 0.5921052631578947,
+        "mean_draw_probability": 0.217153179018121,
+        "observed_draw_rate": 0.21578947368421053
+      }
+    },
+    {
+      "season": 2024,
+      "parameters": {
+        "max_depth": 3,
+        "n_estimators": 180
+      },
+      "baseline": {
+        "n": 380,
+        "rps": 0.19708401717057086,
+        "log_loss": 0.9705639457577222,
+        "accuracy": 0.5289473684210526,
+        "mean_draw_probability": 0.2293153804493941,
+        "observed_draw_rate": 0.24473684210526317
+      },
+      "xgboost": {
+        "n": 380,
+        "rps": 0.19806422922110936,
+        "log_loss": 0.9827537249197139,
+        "accuracy": 0.5289473684210526,
+        "mean_draw_probability": 0.2166199516406969,
+        "observed_draw_rate": 0.24473684210526317
+      }
+    },
+    {
+      "season": 2025,
+      "parameters": {
+        "max_depth": 3,
+        "n_estimators": 180
+      },
+      "baseline": {
+        "n": 380,
+        "rps": 0.20726503155114392,
+        "log_loss": 1.0225257587349872,
+        "accuracy": 0.48157894736842105,
+        "mean_draw_probability": 0.24727147958698273,
+        "observed_draw_rate": 0.2736842105263158
+      },
+      "xgboost": {
+        "n": 380,
+        "rps": 0.20993900816776398,
+        "log_loss": 1.036464000938206,
+        "accuracy": 0.5,
+        "mean_draw_probability": 0.23946424534446314,
+        "observed_draw_rate": 0.2736842105263158
+      }
+    }
+  ],
+  "pooled_baseline": {
+    "n": 1140,
+    "rps": 0.1984361775399128,
+    "log_loss": 0.9755230245047853,
+    "accuracy": 0.5342105263157895,
+    "mean_draw_probability": 0.23506919784866306,
+    "observed_draw_rate": 0.24473684210526317
+  },
+  "pooled_xgboost": {
+    "n": 1140,
+    "rps": 0.1994620075183633,
+    "log_loss": 0.9837889241475993,
+    "accuracy": 0.5403508771929825,
+    "mean_draw_probability": 0.22441245866776036,
+    "observed_draw_rate": 0.24473684210526317
+  },
+  "delta_rps_ci95_week_bootstrap": [
+    -0.0011912362841366736,
+    0.0030977098706543153
+  ],
+  "status": "shadow_candidate_not_promoted",
+  "warning": "Previously examined seasons; not a new blind test. No market ROI or inherited selectivity claims."
+}
