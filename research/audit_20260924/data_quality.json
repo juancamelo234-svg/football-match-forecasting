@@ -1,0 +1,33 @@
+{
+  "rows": 4610,
+  "source_csv_sha256": "177e3c3904a222b5feeff9ce35a579a8060c4e27916a16db5bf22f4ebf7270b4",
+  "duplicate_id": 0,
+  "duplicate_fixture": 0,
+  "missing_core": 0,
+  "negative_npxg": 0,
+  "opponent_npxg_agreement_max_abs": 0.0,
+  "source_archive_sha256": "088c687d3682070fd2c78f0cffc7dbdfba19c59c752cb50c227dbc3ca441a7ce",
+  "season_counts": {
+    "2014": 380,
+    "2015": 380,
+    "2016": 380,
+    "2017": 380,
+    "2018": 380,
+    "2019": 380,
+    "2020": 380,
+    "2021": 380,
+    "2022": 380,
+    "2023": 380,
+    "2024": 380,
+    "2025": 380,
+    "2026": 50
+  },
+  "approximate_kickoff_timestamps": 1911,
+  "noninteger_scores": 0,
+  "npxg_exceeds_xg": 0,
+  "dates_after_audit": 0,
+  "source_version": 37,
+  "source_csv": "football_xg/data/processed/understat_matches_2014_2026.csv",
+  "data_fresh_through": "2026-09-20",
+  "audit_date": "2026-09-24"
+}

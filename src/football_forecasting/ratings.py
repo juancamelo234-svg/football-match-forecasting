@@ -19,6 +19,8 @@ def validate_matches(history):
     if missing:
         raise ValueError(f'Faltan columnas: {sorted(missing)}')
     h = history.copy()
+    if 'match_id' in h and (h.match_id.isna().any() or h.match_id.duplicated().any()):
+        raise ValueError('match_id must be non-null and unique')
     h['date'] = pd.to_datetime(h['date'], utc=True, errors='raise')
     if h[COLS].isna().any().any():
         raise ValueError('Fechas, equipos y npxG deben estar completos')

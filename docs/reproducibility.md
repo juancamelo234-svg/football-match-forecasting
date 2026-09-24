@@ -24,3 +24,7 @@ Some inherited internal comments and error strings remain in Spanish; public doc
 ## Data and code reuse
 
 The repository contains artificial demonstration data generated at runtime and research summaries. It includes saved model probabilities, match identifiers, dates and observed outcome categories for metric auditing, but does not bundle provider training features or shot datasets. No general third-party data redistribution permission or open-source license is implied. The owner should choose a code license explicitly before inviting reuse; absence of a license does not prevent reviewers from inspecting the portfolio.
+
+## Real-data refit audit
+
+The [train/test audit](audit_train_test.md) reproduces statistical-reference fitting across 1,140 historical matches and evaluates 50 later matches. `research/audit_20260924/` preserves output forecasts, split counts, model and code fingerprints, metrics, calibration tables and bootstrap intervals. `scripts/train_test.py` refits from private canonical inputs; `scripts/verify_train_test.py` verifies saved evidence without those inputs. XGBoost training remains unreproduced by this release. The data-boundary repairs do not change valid-input rating/probability formulas.

@@ -44,6 +44,7 @@ def shots_to_match(shots, fixtures, drop_red_card_minutes=False):
         v = pd.to_numeric(f[col], errors='raise')
         if not np.isfinite(v).all() or (v < 0).any() or (v % 1 != 0).any():
             raise ValueError('Marcador oficial invalido')
+        f[col] = v.astype(int)
     for col in ['is_penalty', 'is_set_piece']:
         if not pd.api.types.is_bool_dtype(s[col]):
             raise ValueError('Indicadores de tiros deben ser booleanos')
@@ -149,6 +150,18 @@ def rps(probs, outcomes):
     observed = np.eye(3)[o]
     return float(np.mean(np.sum((p.cumsum(1)[:, :2] - observed.cumsum(1)[:, :2]) ** 2, axis=1) / 2))
 
+def probability_metrics(probs, outcomes):
+    """Score a three-outcome distribution; log loss uses a 1e-15 floor."""
+    p, y = _validate_probabilities(probs, outcomes)
+    return {
+        'n': len(y),
+        'rps': rps(p, y),
+        'log_loss': float(-np.log(np.clip(p[np.arange(len(y)), y], 1e-15, 1)).mean()),
+        'accuracy': float((p.argmax(axis=1) == y).mean()),
+        'mean_draw_probability': float(p[:, 1].mean()),
+        'observed_draw_rate': float((y == 1).mean()),
+    }
+
 def devig(odds):
     o = np.asarray(odds, float)
     if o.ndim != 2 or o.shape[1] != 3 or (not np.isfinite(o).all()) or (o <= 1).any():
@@ -169,7 +182,8 @@ def calibration_table(probs, outcomes, bins=10):
             rows.append({'resultado': name, 'desde': i / bins, 'hasta': (i + 1) / bins, 'n': int(selected.sum()), 'predicha': float(p[selected, col].mean()) if selected.any() else np.nan, 'observada': float(observed[selected, col].mean()) if selected.any() else np.nan})
     return pd.DataFrame(rows)
 
-def run(matches, half_life=120.0, shrink_k=8.0, rho=0.0, min_history=40):
+def run(matches, half_life=120.0, shrink_k=8.0, rho=0.0, min_history=40,
+        test_start=None, test_end=None, freeze_training=False):
     """Walk-forward diario. Conversion provisional npxG -> goles totales:
     factor por localia = suma ponderada goles / suma ponderada npxG del pasado.
     Incluye a nivel liga penaltis/autogoles y desviaciones de finalizacion.
@@ -178,24 +192,45 @@ def run(matches, half_life=120.0, shrink_k=8.0, rho=0.0, min_history=40):
     if not isinstance(min_history, int) or min_history < 1:
         raise ValueError('min_history debe ser entero positivo')
     df = validate_matches(matches).sort_values('date')
+    def boundary(value):
+        if value is None:
+            return None
+        result = pd.to_datetime(value, utc=True)
+        if pd.isna(result) or result != result.normalize():
+            raise ValueError('Test boundaries must be valid UTC midnight dates')
+        return result
+    start, end = boundary(test_start), boundary(test_end)
+    if start is not None and end is not None and start >= end:
+        raise ValueError('test_start must precede exclusive test_end')
+    if freeze_training and start is None:
+        raise ValueError('Frozen training requires test_start')
     for c in ['home_goals', 'away_goals']:
         if c not in df:
             raise ValueError('Faltan goles oficiales')
         v = df[c].to_numpy(float)
         if not np.isfinite(v).all() or (v < 0).any() or (v % 1 != 0).any():
             raise ValueError('Goles oficiales invalidos')
+        df[c] = v.astype(int)
     rows = []
     skipped = 0
+    cached = None
     for day, block in df.groupby(df.date.dt.normalize()):
-        past = df.loc[df.date < day]
+        if (start is not None and day < start) or (end is not None and day >= end):
+            continue
+        cutoff = start if freeze_training else day
+        past = df.loc[df.date < cutoff]
         if len(past) < min_history:
             skipped += len(block)
             continue
-        fit = fit_ratings(past, day, half_life_days=half_life, shrink_k=shrink_k)
-        w = np.exp2(-(day - past.date).dt.total_seconds().to_numpy() / 86400 / half_life)
-        factors = {s: float(np.dot(w, past[f'{s}_goals']) / np.dot(w, past[f'{s}_npxg'])) for s in ['home', 'away']}
-        outcomes = np.where(past.home_goals > past.away_goals, 0, np.where(past.home_goals == past.away_goals, 1, 2))
-        base = np.bincount(outcomes, minlength=3) / len(outcomes)
+        if cached is None or not freeze_training:
+            fit = fit_ratings(past, cutoff, half_life_days=half_life, shrink_k=shrink_k)
+            w = np.exp2(-(cutoff - past.date).dt.total_seconds().to_numpy() / 86400 / half_life)
+            factors = {s: float(np.dot(w, past[f'{s}_goals']) / np.dot(w, past[f'{s}_npxg'])) for s in ['home', 'away']}
+            outcomes = np.where(past.home_goals > past.away_goals, 0, np.where(past.home_goals == past.away_goals, 1, 2))
+            base = np.bincount(outcomes, minlength=3) / len(outcomes)
+            cached = fit, factors, base
+        else:
+            fit, factors, base = cached
         for _, m in block.iterrows():
             pred = predict_npxg(fit, m.home, m.away)
             lh = pred['expected_npxg_home'] * factors['home']
@@ -205,10 +240,14 @@ def run(matches, half_life=120.0, shrink_k=8.0, rho=0.0, min_history=40):
                 row['match_id'] = m.match_id
             if 'competition_id' in m:
                 row['competition_id'] = m.competition_id
+            row.update(training_cutoff=cutoff.isoformat(), training_matches=len(past),
+                       training_max_date=past.date.max().isoformat())
             rows.append(row)
     out = pd.DataFrame(rows)
     out.attrs.update({'skipped_warmup': skipped, 'input_matches': len(df), 'note': 'Evaluacion descriptiva; separar validacion/test ANTES de optimizar'})
     if len(out):
-        out.attrs['rps'] = rps(out[['p_home', 'p_draw', 'p_away']], out.outcome)
-        out.attrs['baseline_rps'] = rps(out[['base_home', 'base_draw', 'base_away']], out.outcome)
+        metrics = probability_metrics(out[['p_home', 'p_draw', 'p_away']], out.outcome)
+        baseline = probability_metrics(out[['base_home', 'base_draw', 'base_away']], out.outcome)
+        out.attrs.update({key: value for key, value in metrics.items() if key != 'n'})
+        out.attrs.update({'baseline_' + key: value for key, value in baseline.items() if key != 'n'})
     return out

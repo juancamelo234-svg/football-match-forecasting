@@ -46,6 +46,12 @@ The candidate improved pick accuracy slightly but did not improve probability sc
 
 The original [predictions](research/predictions.csv), [summary](research/summary.json), and [protocol](research/protocol.json) are included. Run `python scripts/verify_research.py` to recompute and verify all three pooled metrics against the published summary. The script checks the prediction file checksum and allows a 1e-7 absolute numerical tolerance for serialized probabilities. This reproduces **scoring of saved forecasts**, not XGBoost training. Retraining requires the original research features and datasets. See [scope and limitations](docs/reproducibility.md).
 
+## Fresh execution of chronological train/test
+
+The [September 24 audit](docs/audit_train_test.md) refits the public core across 2023/24–2025/26 plus 50 available 2026/27 matches. It compares frozen-season training, daily walk-forward training, and a rho = 0 control using fixed settings. The 1,140 refitted reference forecasts agree with the archive within 3.03e-9. These remain retrospective tests on previously examined seasons.
+
+Run `python scripts/verify_train_test.py` to verify the twelve saved evaluations, temporal metadata and uncertainty calculations without private training data. To refit, follow the audit’s private-input instructions.
+
 ## Evaluate your own match data
 
 Supply a CSV that meets the [data contract](docs/data_dictionary.md):
@@ -54,7 +60,7 @@ Supply a CSV that meets the [data contract](docs/data_dictionary.md):
 football-forecast evaluate --input data/private/matches.csv --output outputs/my-study
 ```
 
-The command requires explicit league identity. Parameters can be changed with `--half-life`, `--shrink-k`, `--rho`, and `--min-history`. Evaluation defaults are 240 days, 2, −0.04, and 80 matches. Demo settings intentionally use the original synthetic reference (120 days, 8, 0). Choose settings before viewing test results.
+The command requires explicit league identity. Parameters can be changed with `--half-life`, `--shrink-k`, `--rho`, and `--min-history`. Use `--test-start` and `--test-end` for an explicit test window; add `--freeze-training` to keep training strictly before the start throughout that window. Evaluation defaults are 240 days, 2, −0.04, and 80 matches. Demo settings intentionally use the original synthetic reference (120 days, 8, 0). Choose settings before viewing test results.
 
 ## Repository map
 

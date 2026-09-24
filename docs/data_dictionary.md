@@ -22,7 +22,7 @@ competition_id,match_id,date,home,away,home_npxg,away_npxg,home_goals,away_goals
 ENG_PL,ENG_PL::demo1,2020-01-01T15:00:00Z,ENG_PL::A,ENG_PL::B,1.4,0.8,1,0
 ```
 
-One row is insufficient to fit a model; the example illustrates schema only. The CLI rejects duplicate match IDs. Core validation rejects duplicate date/home/away keys, missing npxG, negative values, invalid goals, cross-league IDs and mixed competitions. Legacy low-level functions also accept untagged synthetic/Premier tables; use the CLI for strict public input boundaries.
+One row is insufficient to fit a model; the example illustrates schema only. Both the CLI and core reject duplicate match IDs when the column is present. Core validation rejects duplicate date/home/away keys, missing npxG, negative values, invalid goals, cross-league IDs and mixed competitions. Legacy low-level functions also accept untagged synthetic/Premier tables; use the CLI for strict public input boundaries.
 
 ## Definitions and source consistency
 
@@ -45,6 +45,9 @@ One row is insufficient to fit a model; the example illustrates schema only. The
 | p_btts | Probability both teams score |
 | outcome | Observed category: 0 home win, 1 draw, 2 away win |
 | base_home / base_draw / base_away | Earlier-match historical outcome frequencies |
+| training_cutoff / training_max_date / training_matches | Exclusive training boundary, latest included timestamp, and number of training matches |
 | new_team | At least one team uses the league-average fallback |
 
 RPS in metrics uses outcome ordering home/draw/away and normalization by two. `n_eff` in fitted ratings is weighted exposure; `effective_sample_size` is a separate quantity, (sum of weights)^2 / sum of squared weights.
+
+The dedicated `scripts/train_test.py` runner additionally requires integer `season`, the starting year of each season. Evaluation metrics include RPS, log loss (natural logarithm; 1e-15 probability floor), accuracy (argmax, ties favor first home/draw/away category), mean draw probability and observed draw rate, with matching frequency-baseline measures.

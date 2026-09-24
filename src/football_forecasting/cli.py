@@ -26,6 +26,10 @@ def main(argv=None):
     evaluate.add_argument("--half-life", type=float, default=240)
     evaluate.add_argument("--shrink-k", type=float, default=2)
     evaluate.add_argument("--rho", type=float, default=-0.04)
+    evaluate.add_argument("--test-start", help="First test date, inclusive (UTC midnight)")
+    evaluate.add_argument("--test-end", help="Last boundary, exclusive (UTC midnight)")
+    evaluate.add_argument("--freeze-training", action="store_true",
+                          help="Fit only before test-start; never update on test matches")
     args = parser.parse_args(argv)
     if args.output.exists():
         parser.error("Output directory already exists; choose a new path to preserve the run.")
@@ -39,7 +43,8 @@ def main(argv=None):
         if "match_id" not in matches or matches.match_id.duplicated().any():
             parser.error("Input must have unique match_id values.")
         settings = dict(min_history=args.min_history, half_life=args.half_life,
-                        shrink_k=args.shrink_k, rho=args.rho)
+                        shrink_k=args.shrink_k, rho=args.rho, test_start=args.test_start,
+                        test_end=args.test_end, freeze_training=args.freeze_training)
 
     predictions = run(matches, **settings)
     if predictions.empty:

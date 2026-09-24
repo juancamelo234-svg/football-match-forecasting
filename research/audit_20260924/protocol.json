@@ -1,0 +1,37 @@
+{
+  "settings_fixed_before_this_run": {
+    "half_life": 240.0,
+    "shrink_k": 2.0,
+    "rho": -0.04,
+    "min_history": 80
+  },
+  "selection": "No hyperparameter search or promotion",
+  "test_seasons": [
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "input_sha256": "138789270937b96958c4c20ccbb442431d6513d41a5500df6c625dd58896f7af",
+  "source_sha256": {
+    "__init__.py": "06f253a0eaec9ac9cc2358de26d1dd2bea8997d9ce3e86ed3e0dd0b9e62142fe",
+    "cli.py": "8c8dc87b30d4fd5ae69d49ca15cb9cb6812318f3b347cbde70396c4afb5a898c",
+    "probabilities.py": "aabcf89e8771665dee3e2e480a4567898db3c6005405dedfd4a8d9e8cff33066",
+    "ratings.py": "28bcc2e4da64c85177bc4e722d9ce7739cd652321e5b18f13bdc98e6d62557d0",
+    "synthetic.py": "ee45397f49edab4d1726d151662ed9cbeb184606d3e516e5b77c7fe5b5b9e1dd",
+    "validation.py": "0b4a81cc79428a0ebfe8ff0d25b4f0287b598e605350591a82fd66592fab8570"
+  },
+  "runner_sha256": "e65f8e3a66cbaff2a8f1441097233f019275b800df5f14fbe924356079d9a957",
+  "python": "3.12.14",
+  "dependencies": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0"
+  },
+  "protocols": {
+    "frozen_dc": "Ratings, conversion and baseline frozen before first test day",
+    "walk_forward_dc": "Refit using only earlier UTC days, including earlier test days",
+    "walk_forward_poisson": "Same walk-forward intensities, rho=0 control"
+  },
+  "interpretation": "Retrospective diagnostics on previously examined seasons, not fresh blind tests"
+}

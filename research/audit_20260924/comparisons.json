@@ -1,0 +1,116 @@
+[
+  {
+    "period": "2023-2025",
+    "model": "frozen_dc",
+    "n": 1140,
+    "rps": 0.20738863372563487,
+    "log_loss": 1.0020657765337917,
+    "accuracy": 0.5087719298245614,
+    "mean_draw_probability": 0.24033161163285763,
+    "observed_draw_rate": 0.24473684210526317,
+    "mean_delta_rps": -0.024903640142060812,
+    "ci95": [
+      -0.031364863628448335,
+      -0.018267783361126028
+    ],
+    "weeks": 109,
+    "draws": 2000,
+    "seed": 20260924,
+    "limitation": "Retrospective descriptive interval; no adjustment for prior research selection."
+  },
+  {
+    "period": "2023-2025",
+    "model": "walk_forward_dc",
+    "n": 1140,
+    "rps": 0.19843617754470955,
+    "log_loss": 0.9755230245187082,
+    "accuracy": 0.5342105263157895,
+    "mean_draw_probability": 0.23506919784975566,
+    "observed_draw_rate": 0.24473684210526317,
+    "mean_delta_rps": -0.03386302218868317,
+    "ci95": [
+      -0.040963453563119714,
+      -0.0267831311056507
+    ],
+    "weeks": 109,
+    "draws": 2000,
+    "seed": 20260924,
+    "limitation": "Retrospective descriptive interval; no adjustment for prior research selection."
+  },
+  {
+    "period": "2023-2025",
+    "model": "walk_forward_poisson",
+    "n": 1140,
+    "rps": 0.19849716499920284,
+    "log_loss": 0.9765127626184785,
+    "accuracy": 0.5342105263157895,
+    "mean_draw_probability": 0.22669081616407055,
+    "observed_draw_rate": 0.24473684210526317,
+    "mean_delta_rps": -0.033802034734189884,
+    "ci95": [
+      -0.04088926448425791,
+      -0.0267669660969687
+    ],
+    "weeks": 109,
+    "draws": 2000,
+    "seed": 20260924,
+    "limitation": "Retrospective descriptive interval; no adjustment for prior research selection."
+  },
+  {
+    "period": "2026_available",
+    "model": "frozen_dc",
+    "n": 50,
+    "rps": 0.19889625479826722,
+    "log_loss": 1.032549433592885,
+    "accuracy": 0.48,
+    "mean_draw_probability": 0.24822799051819136,
+    "observed_draw_rate": 0.32,
+    "mean_delta_rps": -0.028639626434419772,
+    "ci95": [
+      -0.05173807665404261,
+      -0.008990430019256654
+    ],
+    "weeks": 5,
+    "draws": 2000,
+    "seed": 20260924,
+    "limitation": "Retrospective descriptive interval; no adjustment for prior research selection."
+  },
+  {
+    "period": "2026_available",
+    "model": "walk_forward_dc",
+    "n": 50,
+    "rps": 0.2023383165206306,
+    "log_loss": 1.0418701566167834,
+    "accuracy": 0.46,
+    "mean_draw_probability": 0.2496357304015433,
+    "observed_draw_rate": 0.32,
+    "mean_delta_rps": -0.025238344201804347,
+    "ci95": [
+      -0.04958818099798424,
+      -0.006651014863028575
+    ],
+    "weeks": 5,
+    "draws": 2000,
+    "seed": 20260924,
+    "limitation": "Retrospective descriptive interval; no adjustment for prior research selection."
+  },
+  {
+    "period": "2026_available",
+    "model": "walk_forward_poisson",
+    "n": 50,
+    "rps": 0.20267368513907796,
+    "log_loss": 1.0458683471414865,
+    "accuracy": 0.46,
+    "mean_draw_probability": 0.24059718577352515,
+    "observed_draw_rate": 0.32,
+    "mean_delta_rps": -0.024902975583356985,
+    "ci95": [
+      -0.04846484708611176,
+      -0.006642983291951249
+    ],
+    "weeks": 5,
+    "draws": 2000,
+    "seed": 20260924,
+    "limitation": "Retrospective descriptive interval; no adjustment for prior research selection."
+  }
+]
